@@ -30,13 +30,13 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - Set the firewall to allow ingress on port 27017 for TCP/UDP also.
 
 #### Cost
-- At this point you may note the excessive cost of running a load balancer and three instances, so if you don't expect lots of visitors to yur site you may want to scale down.
-- You can reduce costs by destroying the load balancer and then saveing the second of the frontend instances as a `snapshot` or `image` for later cloning. Befre then destroying it also.
+- At this point you may note the excessive cost of running a load balancer and three instances, so if you don't expect lots of visitors to your site you may want to scale down.
+- You can reduce costs by destroying the load balancer and then saveing the second of the frontend instances as a `snapshot` or `image` for later cloning. Before then destroying it also.
 - To do this, stop the instance with `sudo shutdown -h now` then use the console to make a snapshot or image, verify this is done, then destroy the instance (make sure it is the correct instance).
 - You will already have a SSL/HTTPS Cert from earlier, however you may want to generate another to use certbot's automatic nginx configuration abilty, you can use [this guide](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04) to set up your remaining frontend nginx installation with HTTPS.
 - Remember to repoint the DNS records to your remaining frontend IP or your site will be unreachable.
 
-###Further installation
+### Further installation
 
 - Node JS
 - Wiki JS
@@ -46,6 +46,10 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 
 ### Authentication
 - 0Auth
+
+### Final steps
+- Once complete: use `sudo shutdown`, create a snapshot, reboot and clone as needed.
+- Creating a init script would be good too.
 
 ### Services and further considerations
 - https://docs.requarks.io/wiki/prerequisites
