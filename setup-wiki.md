@@ -8,6 +8,7 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - Start by creating an instance running Ubuntu 16.04 x64.
 - Create another identical instance. (mirror all actions to keep it indentical)
 - Add another instance for database backend, ignore this for now as you will configure it later.
+- Consider assigning a `static` or `floating` ip address to your instances via the console.
 - SSH into both instances from your local machine.
 - Follow this [intial setup guide](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04) on both machines.
 - Login to your domain registar (namecheap, godaddy etc) and point the nameservers to digitalocean. `ns1.digitalocean.com` `ns2.digitalocean.com` `ns3.digitalocean.com`
@@ -27,6 +28,15 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - Enable HTTP(S) on both frontend servers on the ufw firewall by running `sudo ufw allow https` and `sudo ufw allow http`
 - Make sure the console set firewall allows egress on at least port 27017 for mongodb.
 - Set the firewall to allow ingress on port 27017 for TCP/UDP also.
+
+#### Cost
+- At this point you may note the excessive cost of running a load balancer and three instances, so if you don't expect lots of visitors to yur site you may want to scale down.
+- You can reduce costs by destroying the load balancer and then saveing the second of the frontend instances as a `snapshot` or `image` for later cloning. Befre then destroying it also.
+- To do this, stop the instance with `sudo shutdown -h now` then use the console to make a snapshot or image, verify this is done, then destroy the instance (make sure it is the correct instance).
+- You will already have a SSL/HTTPS Cert from earlier, you can use [this guide](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04) to set up your remaining frontend nginx installation with HTTPS
+- Remember to repoint the DNS records to your remaining frontend IP or your site will be unreachable.
+
+###Further installation
 
 - Node JS
 - Wiki JS
