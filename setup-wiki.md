@@ -50,7 +50,47 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 
 ### wiki node
 - Use this [wiki js](https://docs.requarks.io/wiki/install) installation guide.
-- I used `curl -sSo- https://wiki.js.org/install.sh | bash` to install in the root home directory.
+- I used `npm install wiki.js@latest` to install in a `Wiki` directory in root home directory.
+- Custom port is 3000.
+- start wiki.js with `node wiki configure`
+- direct root nginx to port 3000 and hello.js to `/hello` (for debugging). Do this by:
+- Edit  `nano /etc/nginx/sites-available/default` to look like:
+```
+        location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+        location /hello {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+
+        }
+```
+
+- Check syntax with `nginx -t` and restart Nginx `sudo systemctl restart nginx`, then test root and `/hello` on the domain name. eg. `wiki.org.uk` and `wiki.org.uk/hello` they should both work.
+- Install lynx via `sudo apt-get install lynx`.
+- Using your second SSH connection, use lynx to complete the wiki.js config on `http://localhost:3000` (this won't be used unless you really need it).
+- add 
+```
+        location ~ ^/(static|media|js|images|css|fonts)/ {
+        proxy_pass http://localhost:3000;
+        }
+```
+ - to the nginx config or it won't work.
+  - At this point you should just copy [this nginx config](https://github.com/Arthur-Kerensa/arthur-kerensa.github.io/blob/master/nginx-settings.md) because all the previous nginx is screwed to hell...
 
 ### Further installation 
 - Wiki JS
