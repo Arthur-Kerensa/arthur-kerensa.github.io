@@ -25,6 +25,50 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - Start MondoDB and pin the version.
 - Note the use of port 27017, add a ufw rule on the database server to allow it from both frontend servers. eg. `sudo ufw allow 27017` or the (safer) `sudo ufw allow from your_other_server_ip/32 to any port 27017` (remember to allow ingress from both frontend servers)
 - If you need help, check out [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04) which also gives firewall instuctions.
+- Follow this [guide](https://ianlondon.github.io/blog/mongodb-auth/) with the notes below:
+```
+use wiki_db
+
+db.createUser({
+    user: 'jeremy',
+    pwd: 'secretPassword',
+    roles: [{ role: 'readWrite', db:'wiki_db'}]
+})
+```
+- Use `nano /etc/mongod.conf`
+- indent is important.
+- restart mongod `sudo service mongod start` or `restart` then `status` to check it.
+- Note wiki.js will need this: `mongodb://jeremy:secretPassword@159.65.30.111:27017/wiki_db` string to connect.
+- Read [this on URI](https://docs.mongodb.com/manual/reference/connection-string/), [this on secuirty](https://www.digitalocean.com/community/tutorials/how-to-securely-configure-a-production-mongodb-server) and [this install guide](https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-16-04) for more useful info.
+- after trying a million things such a below, i gave up:
+```
+https://docs.mongodb.com/manual/tutorial/enable-authentication/
+mongod --auth --port 27017 --dbpath /
+mongo -u jeremy -p secretPassword 159.65.30.111/wiki_db
+
+https://docs.mongodb.com/manual/tutorial/configure-linux-iptables-firewall/
+iptables -A INPUT -s <ip-address> -p tcp --destination-port 27017 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -d <ip-address> -p tcp --source-port 27017 -m state --state ESTABLISHED -j ACCEPT
+
+use admin
+db.createUser(
+  {
+    user: "admin",
+    pwd: "secretPassword",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+mongo --port 27017 -u "admin" -p "secretPassword" \
+  --authenticationDatabase "admin"
+
+mongo -u admin -p secretPassword --authenticationDatabase admin
+
+mongo -u admin -p secretPassword --authenticationDatabase admin
+
+mongo -u admin -p "secretPassword" 159.65.30.111/wiki_db
+````
+- i then installed it on the frontend instead.
 
 ### contine to install the software.
 - Enable HTTP(S) on both frontend servers on the ufw firewall by running `sudo ufw allow https` and `sudo ufw allow http`
@@ -97,6 +141,12 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 
 ### Further installation 
 - Wiki JS
+
+Is Wiki.js going to be behind a web server (e.g. nginx / apache / IIS) or proxy?
+- Make sure the upload limit is sufficient. Most web servers have a low limit (e.g. 2 MB) by default.
+- Make sure your web server is configured to allow web sockets. Wiki.js will fallback to standard XHR queries if not available.
+- Do not rewrite URLs after the domain. This can cause unexpected issues in Wiki.js navigation.
+- Do not remove or alter the client IP when proxying the requests. This can cause the authentication brute force protection to engage unexpectedly.
 
 ### Authentication
 - 0Auth
