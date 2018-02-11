@@ -91,6 +91,9 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 ```
  - to the nginx config or it won't work.
   - At this point you should just copy [this nginx config](https://github.com/Arthur-Kerensa/arthur-kerensa.github.io/blob/master/nginx-settings.md) because all the previous nginx is screwed to hell...
+- This [info](https://docs.requarks.io/wiki/admin-guide/setup-nginx) is a good guide too, but note a few rules will need to be wiped out due to duplication caused presumebly by certbot.
+- [This](https://www.nginx.com/resources/wiki/start/) and [this](https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/) and [this](https://www.nginx.com/resources/wiki/start/) are worth reading.
+- 
 
 ### Further installation 
 - Wiki JS
@@ -112,6 +115,7 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - https://www.keycdn.com/blog/responsive-images/
 - https://developers.google.com/speed/
 - https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
+- https://serverfault.com/questions/564127/nginx-location-regex-for-multiple-paths-with-backend
 
 ### To host a second site
 To also host mediawiki:
