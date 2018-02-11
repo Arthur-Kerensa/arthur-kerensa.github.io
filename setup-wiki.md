@@ -4,6 +4,7 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 ### Inital Digital Ocean Setup
 - Navigate to https://www.digitalocean.com/
 - Create an account, verify email, connect twitter, google and github accounts, fill out profile and add payment method.
+- If you don't have github, google, and twitter accounts, make them now.
 - Create an SSH key and add it to the Digital Ocean console.
 - Start by creating an instance running Ubuntu 16.04 x64.
 - Create another identical instance. (mirror all actions to keep it indentical)
@@ -14,6 +15,7 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - Login to your domain registar (namecheap, godaddy etc) and point the nameservers to digitalocean. `ns1.digitalocean.com` `ns2.digitalocean.com` `ns3.digitalocean.com`
 - Taking note of [this guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-host-name-with-digitalocean) now follow this [guide](https://www.digitalocean.com/community/tutorials/how-to-configure-ssl-termination-on-digitalocean-load-balancers) to create a load balancer.
 - During this procedure you will have installed NGinx and created a HTTPS certificate. 
+- Any NGinx issues can be checked with the help of [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04).
 - Create a firewall on the console for your two frontend servers, allow all HTTP(S) and SSH traffic.
 
 ### Next setup the database
@@ -36,13 +38,20 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - You will already have a SSL/HTTPS Cert from earlier, however you may want to generate another to use certbot's automatic nginx configuration abilty, you can use [this guide](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04) to set up your remaining frontend nginx installation with HTTPS.
 - Remember to repoint the DNS records to your remaining frontend IP or your site will be unreachable.
 
-### Further installation
-
-- Node JS
-- Wiki JS
+### Further installation (node.js)
+- Node JS is able to be a webserver in it's own right, but in this case NGinx will be used in front.
+- Use this [guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04) to install node.js. follow the hello world example. (nb. I deleted the `location ~ /.well-known { ...` section by mistake). make sure you site displays hello world before continuing.
+- Remove the hello world init with `pm2 unstartup systemd` command.
 
 ### Setup Git repo
-- git
+- Make sure git is installed (use `git --version`) on your frontend server.
+- create a git repo.
+
+### wiki node
+- Use this [wiki js](https://docs.requarks.io/wiki/install) installation guide.
+
+### Further installation 
+- Wiki JS
 
 ### Authentication
 - 0Auth
@@ -52,6 +61,7 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - Creating a init script would be good too.
 
 ### Services and further considerations
+- https://www.nginx.com/blog/5-performance-tips-for-node-js-applications/
 - https://docs.requarks.io/wiki/prerequisites
 - https://gitter.im/Requarks/wiki
 - https://www.keycdn.com/blog/make-a-favicon/
@@ -60,6 +70,12 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 - https://www.keycdn.com/blog/responsive-images/
 - https://developers.google.com/speed/
 - https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
+
+### To host a second site
+To also host mediawiki:
+- create a [LEMP stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04).
+- Use [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04) to setup more than one domain.
+
 
 
 
