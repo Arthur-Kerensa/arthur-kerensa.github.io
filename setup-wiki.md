@@ -40,15 +40,17 @@ This guide is using digitalocean cloud hosting but the same steps should work eq
 
 ### Further installation (node.js)
 - Node JS is able to be a webserver in it's own right, but in this case NGinx will be used in front.
-- Use this [guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04) to install node.js. follow the hello world example. (nb. I deleted the `location ~ /.well-known { ...` section by mistake). make sure you site displays hello world before continuing.
+- Use this [guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04) to install node.js. follow the hello world example. (NB. I deleted the `location ~ /.well-known { ...` section by mistake). make sure you site displays hello world before continuing.
 - Remove the hello world init with `pm2 unstartup systemd` command.
 
 ### Setup Git repo
 - Make sure git is installed (use `git --version`) on your frontend server.
-- create a git repo.
+- Create a git repo.
+- Follow this [guide](https://docs.requarks.io/wiki/install/git) to setup your repo, you will need to setup a new [SSH key](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) on your frontend server.
 
 ### wiki node
 - Use this [wiki js](https://docs.requarks.io/wiki/install) installation guide.
+- I used `curl -sSo- https://wiki.js.org/install.sh | bash` to install in the root home directory.
 
 ### Further installation 
 - Wiki JS
