@@ -229,6 +229,7 @@ Sitemap: https://wiki.org.uk/sitemap.xml
    </url>
 
 </urlset>
-'''
-
+```
+### setup CDN
+- https://app.keycdn.com/users/view
 
