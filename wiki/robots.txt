@@ -1,0 +1,9 @@
+# Rule 1
+User-agent: Googlebot
+Disallow: /private/
+
+# Rule 2
+User-agent: *
+Allow: /
+
+Sitemap: https://wiki.org.uk/sitemap.xml
