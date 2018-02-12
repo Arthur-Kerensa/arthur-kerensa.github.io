@@ -172,7 +172,63 @@ To also host mediawiki:
 - create a [LEMP stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04).
 - Use [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04) to setup more than one domain.
 
+### add robots.txt and sitemap
+- Edit `nano /etc/nginx/sites-available/default`
+- Add:
+```
+    location = /robots.txt {
+        alias /var/www/html/robots.txt;
 
+        }
 
+    location = /sitemap.xml {
+        alias /var/www/html/sitemap.xml;
+
+        }
+```
+- Restart NGinx with `sudo systemctl restart nginx`
+- Find out about sitemaps [here](https://www.sitemaps.org/protocol.html#sitemapXMLExample) and robots.txt files at the [google search console](https://support.google.com/webmasters/answer/6062596?hl=en&ref_topic=6061961).
+
+```
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 nginx[13776]: nginx: [warn] duplicate value "TLSv1" in /etc/letsencrypt/options-ssl-nginx.conf:10
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 nginx[13776]: nginx: [warn] duplicate value "TLSv1.1" in /etc/letsencrypt/options-ssl-nginx.conf:10
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 nginx[13776]: nginx: [warn] duplicate value "TLSv1.2" in /etc/letsencrypt/options-ssl-nginx.conf:10
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 nginx[13781]: nginx: [warn] duplicate value "TLSv1" in /etc/letsencrypt/options-ssl-nginx.conf:10
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 nginx[13781]: nginx: [warn] duplicate value "TLSv1.1" in /etc/letsencrypt/options-ssl-nginx.conf:10
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 nginx[13781]: nginx: [warn] duplicate value "TLSv1.2" in /etc/letsencrypt/options-ssl-nginx.conf:10
+Feb 12 14:30:43 ubuntu-s-1vcpu-1gb-lon1-01-wiki-js-01 systemd[1]: nginx.service: Failed to read PID from file /run/nginx.pid: Invalid argument
+```
+- robots.txt
+```
+# Rule 1
+User-agent: Googlebot
+Disallow: /private/
+
+# Rule 2
+User-agent: *
+Allow: /
+
+Sitemap: https://wiki.org.uk/sitemap.xml
+```
+- sitemap.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+   <url>
+
+      <loc>https://wiki.org.uk/</loc>
+
+      <lastmod>2018-02-02</lastmod>
+
+      <changefreq>daily</changefreq>
+
+      <priority>1</priority>
+
+   </url>
+
+</urlset>
+'''
 
 
